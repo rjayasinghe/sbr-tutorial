@@ -26,23 +26,18 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @Configuration
-@ComponentScan(basePackages = "coffee.synyx.bookmarks")
+@ComponentScan
 @EnableAutoConfiguration
 public class SpringBootRestTutorialApplication {
 
 	@Bean
-	CommandLineRunner init(AccountRepository accountRepository,
-						   BookmarkRepository bookmarkRepository) {
-		return (evt) -> Arrays.asList(
-				"jhoeller,dsyer,pwebb,ogierke,rwinch,mfisher,mpollack,jlong".split(","))
-				.forEach(
-						a -> {
-							Account account = accountRepository.save(new Account(a,
-									"password"));
-							bookmarkRepository.save(new Bookmark(account,
-									"http://bookmark.com/1/" + a, "A description"));
-							bookmarkRepository.save(new Bookmark(account,
-									"http://bookmark.com/2/" + a, "A description"));
+	CommandLineRunner init(AccountRepository accountRepository, BookmarkRepository bookmarkRepository) {
+		return (evt) ->
+				Arrays.asList("jhoeller,dsyer,pwebb,ogierke,rwinch,mfisher,mpollack,jlong".split(","))
+						.forEach(a -> {
+							Account account = accountRepository.save(new Account(a, "password"));
+							bookmarkRepository.save(new Bookmark(account, "http://bookmark.com/1/" + a, "A description"));
+							bookmarkRepository.save(new Bookmark(account, "http://bookmark.com/2/" + a, "A description"));
 						});
 	}
 
