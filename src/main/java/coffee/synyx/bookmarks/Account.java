@@ -45,6 +45,6 @@ public class Account {
         this.password = password;
     }
 
-    Account() { // jpa only
+    public Account() { // jpa only
     }
 }
