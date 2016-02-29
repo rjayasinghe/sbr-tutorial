@@ -14,12 +14,13 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.security.Principal;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/{userId}/bookmarks")
+@RequestMapping("/bookmarks")
 class BookmarkRestController {
 
     private final BookmarkRepository bookmarkRepository;
@@ -27,7 +28,8 @@ class BookmarkRestController {
     private final AccountRepository accountRepository;
 
     @RequestMapping(method = RequestMethod.POST)
-    ResponseEntity<?> add(@PathVariable String userId, @RequestBody Bookmark input) {
+    ResponseEntity<?> add(Principal principal, @RequestBody Bookmark input) {
+        final String userId = principal.getName();
 
         this.validateUser(userId);
 
@@ -46,14 +48,17 @@ class BookmarkRestController {
     }
 
     @RequestMapping(value = "/{bookmarkId}", method = RequestMethod.GET)
-    BookmarkResource readBookmark(@PathVariable String userId, @PathVariable Long bookmarkId) {
+    BookmarkResource readBookmark(Principal principal, @PathVariable Long bookmarkId) {
+        final String userId = principal.getName();
+
         this.validateUser(userId);
         return new BookmarkResource(this.bookmarkRepository.findOne(bookmarkId));
     }
 
 
     @RequestMapping(method = RequestMethod.GET)
-    Resources<BookmarkResource> readBookmarks(@PathVariable String userId) {
+    Resources<BookmarkResource> readBookmarks(Principal principal) {
+        final String userId = principal.getName();
 
         this.validateUser(userId);
 
